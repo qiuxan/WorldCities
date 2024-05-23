@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:57159",
-      "sslPort": 44327
+      "applicationUrl": "http://localhost:40080",
+      "sslPort": 40443
     }
   },
   "profiles": {
@@ -25,7 +25,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7163;http://localhost:40443.",
+      "applicationUrl": "https://localhost:40443;http://localhost:40080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
