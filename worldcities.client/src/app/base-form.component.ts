@@ -15,6 +15,7 @@ export abstract class BaseFormComponent {
     Object.keys(control.errors || {}).forEach((key) => {
       switch (key) {
         case 'required':
+          displayName === 'Country' ? errors.push(`Please select a ${displayName}`) :
           errors.push(`${displayName} is required.`);
           break;
         case 'pattern':
