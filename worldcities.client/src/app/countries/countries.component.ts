@@ -15,7 +15,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./countries.component.scss']
 })
 export class CountriesComponent implements OnInit {
-  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3'];
+  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3','totCities'];
   public countries!: MatTableDataSource<Country>;
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -75,6 +75,8 @@ export class CountriesComponent implements OnInit {
           this.paginator.pageIndex = result.pageIndex;
           this.paginator.pageSize = result.pageSize;
           this.countries = new MatTableDataSource<Country>(result.data);
+
+          console.log({countries:this.countries});
         },
         error: (error) => console.error(error)
       });

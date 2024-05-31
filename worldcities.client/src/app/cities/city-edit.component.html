@@ -49,7 +49,7 @@
       </mat-error>-->
       <mat-error *ngFor="let error of getErrors(form.get('lon')!,
         'Longitude ',
-      { 'pattern' : 'requires a positive or negative number with 0-4 decimalvalues' })">
+        { 'pattern' : 'requires a positive or negative number with 0-4 decimalvalues' })">
         {{error}}
       </mat-error>
     </mat-form-field>
