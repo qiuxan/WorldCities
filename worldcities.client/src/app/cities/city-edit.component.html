@@ -29,8 +29,8 @@
       <input matInput formControlName="lat" required
              placeholder="Insert latitude">
       <!--<mat-error *ngIf="form.controls['lat'].errors?.['required']">
-    Latitude is required.
-  </mat-error>-->
+        Latitude is required.
+      </mat-error>-->
       <mat-error *ngFor="let error of getErrors(form.get('lat')!,
       'Latitude ',
       { 'pattern' : 'requires a positive or negative number with 0-4 decimalvalues' })">
@@ -90,4 +90,15 @@
       </button>
     </div>
   </form>
+</div>
+<!-- Form activity log panel -->
+<div class="info">
+  <div class="info-header">Form Activity Log</div>
+  <div class="info-body">
+    <div class="info-value">
+      <span *ngIf="activityLog"
+            [innerHTML]="activityLog">
+      </span>
+    </div>
+  </div>
 </div>
