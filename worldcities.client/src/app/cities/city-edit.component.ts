@@ -69,6 +69,17 @@ export class CityEditComponent
         }
       });
 
+    // react to name value changes
+    this.form.get("name")!.valueChanges
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values.");
+        }
+        else {
+          this.log("Name was updated by the user.");
+        }
+      });
+
     this.loadData();
   }
   log(str: string) {
