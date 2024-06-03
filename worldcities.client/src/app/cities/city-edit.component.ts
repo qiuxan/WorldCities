@@ -5,8 +5,8 @@ import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn }
 //import { environment } from './../../environments/environment';
 import { City } from './city';
 import { Country } from './../countries/country';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { BaseFormComponent } from '../base-form.component';
 import { CityService } from './city.service';
 
@@ -36,7 +36,7 @@ export class CityEditComponent
   // Activity Log (for debugging purposes)
   activityLog: string = '';
   private subscriptions: Subscription = new Subscription();
-
+  private destroySubject = new Subject();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -60,7 +60,8 @@ export class CityEditComponent
     }, null, this.isDupeCity());
 
     // react to form changes
-    this.subscriptions.add(this.form.valueChanges
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Form Model has been loaded.");
@@ -68,10 +69,11 @@ export class CityEditComponent
         else {
           this.log("Form was updated by the user.");
         }
-      }));
+      });
 
     // react to name value changes
-    this.subscriptions.add(this.form.get("name")!.valueChanges
+    this.form.get("name")!.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Name has been loaded with initial values.");
@@ -79,13 +81,16 @@ export class CityEditComponent
         else {
           this.log("Name was updated by the user.");
         }
-      }));
+      });
 
     this.loadData();
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    // emit a value with the takeUntil notifier
+    this.destroySubject.next(true);
+    // complete the subject
+    this.destroySubject.complete();
   }
 
   log(str: string) {
