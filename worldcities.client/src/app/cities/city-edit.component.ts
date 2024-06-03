@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 //import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -18,7 +18,7 @@ import { CityService } from './city.service';
   styleUrls: ['./city-edit.component.scss']
 })
 export class CityEditComponent
-  extends BaseFormComponent implements OnInit {
+  extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title
   title?: string;
   
@@ -30,8 +30,8 @@ export class CityEditComponent
   // and not NULL when we're editing an existing one.
   id?: number;
 
-  // the countries array for the select
-  countries?: Country[];
+  // the countries observable for the select (using async pipe)
+  countries?: Observable<Country[]>;
 
   // Activity Log (for debugging purposes)
   activityLog: string = '';
@@ -143,19 +143,16 @@ export class CityEditComponent
     }
   }
   loadCountries() {
-    // fetch all countries from the server
-    this.cityService.getCountries(
-      0,
-      9999,
-      "name",
-      "asc",
-      null,
-      null).subscribe({
-      next: (result) => {
-        this.countries = result.data;
-      },
-      error: (error) => console.error(error)
-    });
+    // fetch all the countries from the server
+    this.countries = this.cityService
+      .getCountries(
+        0,
+        9999,
+        "name",
+        "asc",
+        null,
+        null)
+      .pipe(map(x => x.data));
   }
   onSubmit() {
     var city = (this.id) ? this.city : <City>{};
