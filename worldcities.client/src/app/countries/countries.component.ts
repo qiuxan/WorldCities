@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from './../../environments/environment';
+//import { HttpClient, HttpParams } from '@angular/common/http';
+//import { environment } from './../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +8,8 @@ import { Country } from './country';
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
+import { CountryService } from './country.service';
 
 @Component({
   selector: 'app-countries',
@@ -27,7 +29,7 @@ export class CountriesComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   filterTextChanged: Subject<string> = new Subject<string>();
-  constructor(private http: HttpClient) {
+  constructor(private countryService: CountryService) {
   }
   ngOnInit() {
     this.loadData();
@@ -53,22 +55,27 @@ export class CountriesComponent implements OnInit {
     this.getData(pageEvent);
   }
   getData(event: PageEvent) {
-    var url = environment.baseUrl + 'api/Countries';
-    var params = new HttpParams()
-      .set("pageIndex", event.pageIndex.toString())
-      .set("pageSize", event.pageSize.toString())
-      .set("sortColumn", (this.sort)
-        ? this.sort.active
-        : this.defaultSortColumn)
-      .set("sortOrder", (this.sort)
-        ? this.sort.direction
-        : this.defaultSortOrder);
-    if (this.filterQuery) {
-      params = params
-        .set("filterColumn", this.defaultFilterColumn)
-        .set("filterQuery", this.filterQuery);
-    }
-    this.http.get<any>(url, { params })
+
+    var sortColumn = (this.sort)
+      ? this.sort.active
+      : this.defaultSortColumn;
+    var sortOrder = (this.sort)
+      ? this.sort.direction
+      : this.defaultSortOrder;
+    var filterColumn = (this.filterQuery)
+      ? this.defaultFilterColumn
+      : null;
+    var filterQuery = (this.filterQuery)
+      ? this.filterQuery
+      : null;
+
+    this.countryService.getData(
+      event.pageIndex,
+      event.pageSize,
+      sortColumn,
+      sortOrder,
+      filterColumn,
+      filterQuery)
       .subscribe({
         next: (result) => {
           this.paginator.length = result.totalCount;
