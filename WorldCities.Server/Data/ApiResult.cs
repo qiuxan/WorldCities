@@ -4,6 +4,7 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
+using EFCore.BulkExtensions;
 
 namespace WorldCities.Server.Data
 {
@@ -90,6 +91,10 @@ namespace WorldCities.Server.Data
             source = source
             .Skip(pageIndex * pageSize)
             .Take(pageSize);
+
+            // retrieve the SQL query (for debug purposes)
+            var sql = source.ToParametrizedSql();
+
             var data = await source.ToListAsync();
             return new ApiResult<T>(
             data,
