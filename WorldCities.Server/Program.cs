@@ -61,6 +61,7 @@ namespace WorldCities.Server
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 8;
             })
+            .AddApiEndpoints()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add Authentication services & middlewares
@@ -82,7 +83,7 @@ namespace WorldCities.Server
                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.
                     GetBytes(builder.Configuration["JwtSettings:SecurityKey"]!))
                 };
-            });
+            }).AddBearerToken(IdentityConstants.BearerScheme);
 
             builder.Services.AddScoped<JwtHandler>();
 
@@ -106,7 +107,8 @@ namespace WorldCities.Server
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            //app.MapIdentityApi<IdentityUser>();
+            app.MapIdentityApi<ApplicationUser>();
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
