@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './auth/auth.service';
 
 interface WeatherForecast {
   date: string;
@@ -14,13 +14,8 @@ interface WeatherForecast {
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
+  constructor(private authService: AuthService) { }
+  ngOnInit(): void {
+    this.authService.init();
   }
-
-
-  title = 'worldcities.client';
 }

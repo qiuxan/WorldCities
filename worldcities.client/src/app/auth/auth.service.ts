@@ -11,12 +11,20 @@ export class AuthService {
   constructor(
     protected http: HttpClient) {
   }
-  public tokenKey: string = "token";
+  private tokenKey: string = "token";
+
+  private _authStatus = new BehaviorSubject<boolean>(false);
+  public authStatus = this._authStatus.asObservable();
+
   isAuthenticated(): boolean {
     return this.getToken() !== null;
   }
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
+  }
+  init(): void {
+    if (this.isAuthenticated())
+      this.setAuthStatus(true);
   }
   login(item: LoginRequest): Observable<LoginResult> {
     var url = environment.baseUrl + "api/Account/Login";
@@ -24,7 +32,15 @@ export class AuthService {
       .pipe(tap(loginResult => {
         if (loginResult.success && loginResult.token) {
           localStorage.setItem(this.tokenKey, loginResult.token);
+          this.setAuthStatus(true);
         }
       }));
+  }
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    this.setAuthStatus(false);
+  }
+  private setAuthStatus(isAuthenticated: boolean): void {
+    this._authStatus.next(isAuthenticated);
   }
 }
