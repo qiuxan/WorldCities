@@ -10,6 +10,7 @@ using WorldCities.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using WorldCities.Server.Data.GraphQL;
 
 namespace WorldCities.Server
 {
@@ -87,6 +88,13 @@ namespace WorldCities.Server
 
             builder.Services.AddScoped<JwtHandler>();
 
+            builder.Services.AddGraphQLServer()
+            .AddAuthorization()
+            .AddQueryType<Query>()
+            .AddMutationType<Mutation>()
+            .AddFiltering()
+            .AddSorting();
+
             var app = builder.Build();
 
             app.UseSerilogRequestLogging();
@@ -110,6 +118,8 @@ namespace WorldCities.Server
             //app.MapIdentityApi<IdentityUser>();
             app.MapIdentityApi<ApplicationUser>();
             app.MapControllers();
+
+            app.MapGraphQL("/api/graphql");
 
             app.MapFallbackToFile("/index.html");
 
