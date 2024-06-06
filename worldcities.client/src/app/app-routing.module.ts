@@ -10,8 +10,8 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'cities', component: CityEditComponent, canActivate: [AuthGuard] },
-  { path: 'city', component: CityEditComponent },
+  { path: 'cities', component: CitiesComponent },
+  { path: 'city', component: CityEditComponent, canActivate: [AuthGuard] },
   { path: 'city/:id', component: CityEditComponent, canActivate: [AuthGuard] },
   { path: 'countries', component: CountriesComponent },
   { path: 'country/:id', component: CountryEditComponent, canActivate: [AuthGuard] },

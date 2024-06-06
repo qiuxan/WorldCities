@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../base.service';
-import { Observable } from 'rxjs'
+import { Observable, map } from 'rxjs'
 
 import { City } from './city';
 import { Country } from './../countries/country';
@@ -12,7 +12,7 @@ import { Country } from './../countries/country';
 export class CityService
   extends BaseService<City> {
   constructor(
-    http: HttpClient) {
+    http: HttpClient,) {
     super(http);
   }
   getData(
