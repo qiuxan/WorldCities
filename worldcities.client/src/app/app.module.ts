@@ -22,6 +22,7 @@ import { CityEditComponent } from './cities/city-edit.component';
 import { CountryEditComponent } from './countries/country-edit.component';
 import { LoginComponent } from './auth/login.component';
 import { ConnectionServiceModule } from 'ng-connection-service';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ConnectionServiceModule } from 'ng-connection-service';
     MatIconModule,
     ConnectionServiceModule,
     MatToolbarModule,
+    GraphQLModule,
   ],
   providers: [
     {
