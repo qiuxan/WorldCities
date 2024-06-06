@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 
+import { ConnectionService, ConnectionServiceOptions, ConnectionState } from
+  'ng-connection-service';
+import { Observable, map } from 'rxjs';
+import { environment } from '../environments/environment';
+
 interface WeatherForecast {
   date: string;
   temperatureC: number;
