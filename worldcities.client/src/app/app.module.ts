@@ -21,7 +21,6 @@ import { CountriesComponent } from './countries/countries.component';
 import { CityEditComponent } from './cities/city-edit.component';
 import { CountryEditComponent } from './countries/country-edit.component';
 import { LoginComponent } from './auth/login.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { ConnectionServiceModule } from 'ng-connection-service';
 
 @NgModule({
@@ -46,12 +45,6 @@ import { ConnectionServiceModule } from 'ng-connection-service';
     MatIconModule,
     ConnectionServiceModule,
     MatToolbarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
   ],
   providers: [
     {

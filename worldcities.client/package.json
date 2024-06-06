@@ -23,7 +23,6 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@angular/service-worker": "^17.3.0",
     "ng-connection-service": "15.0.0",
     "jest-editor-support": "*",
     "run-script-os": "*",
