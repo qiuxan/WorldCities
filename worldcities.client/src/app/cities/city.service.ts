@@ -101,13 +101,46 @@ export class CityService
         result.data.cities.nodes[0]));
   }
 
-  put(item: City): Observable<City> {
-    var url = this.getUrl("api/Cities/" + item.id);
-    return this.http.put<City>(url, item);
+  put(input: City): Observable<City> {
+    return this.apollo
+      .mutate({
+        mutation: gql`
+        mutation UpdateCity($city: CityDTOInput!) {
+        updateCity(cityDTO: $city) {
+        id
+        name
+        lat
+        lon
+        countryId
+        }
+        }
+        `,
+        variables: {
+          city: input
+        }
+      }).pipe(map((result: any) =>
+        result.data.updateCity));
   }
+
   post(item: City): Observable<City> {
-    var url = this.getUrl("api/Cities");
-    return this.http.post<City>(url, item);
+    return this.apollo
+      .mutate({
+        mutation: gql`
+        mutation AddCity($city: CityDTOInput!) {
+        addCity(cityDTO: $city) {
+        id
+        name
+        lat
+        lon
+        countryId
+        }
+        }
+        `,
+        variables: {
+          city: item
+        }
+      }).pipe(map((result: any) =>
+        result.data.addCity));
   }
   getCountries(
     pageIndex: number,
